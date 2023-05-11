@@ -1,42 +1,63 @@
 import Swal from "sweetalert2";
-import { useState } from "react";
-import React from 'react';
+import { useDispatch } from "react-redux";
 
 function GifImage({ gif }) {
 
-  const [favoriteCategory, setFavoriteCategory] = useState('');
+  const dispatch = useDispatch();
 
-  const handleCategoryChoice = (event) => {
-    setFavoriteCategory(event.target.value)
-    console.log('favoriteCategory:', favoriteCategory, event.target.value);
-  }
-
-  const addToFavorites = () => {
+  let choice;
+  const addToFavorites = async () => {
     console.log('Clicked Favorite button');
-    Swal.fire({
-      icon: 'question',
+    const categoryChoice = await Swal.fire({
       title: 'Choose a favorite category!',
+      input: 'select',
+      inputOptions: {
+        'cartoon': 'Cartoon',
+        'cohort': 'Cohort',
+        'funny': 'Funny',
+        'meme': 'Meme',
+        'nsfw': 'NSFW'
+      },
+      inputPlaceholder: 'Select a Category',
+      imageUrl: gif.image,
       showCancelButton: true,
-      html: `
-        <p>Category</p>
-        <select name="catagory" onChange=${handleCategoryChoice}>
-          <option value="" disabled selected>Select a Category</option>
-          <option value="cartoon">Cartoon</option>
-          <option value="cohort">Cohort</option>
-          <option value="funny">Funny</option>
-          <option value="meme">Meme</option>
-          <option value="nsfw" >NSFW</option>
-        </select>
-        <p>Favorited Image</p>
-        <img src=${gif.image}>
-      `
-    }).then((result) => {
-      if (result.isConfirmed) {
-        console.log('Favorite category:', result);
-        // Do something with the selected category here
+      confirmButtonText: `Add to favorites.`,
+      cancelButtonText: `Don't add this Gif.`,
+      inputValidator: (categoryChoice) => {
+        return new Promise((resolve) => {
+          if (categoryChoice !== '') {
+            choice = categoryChoice
+            resolve()
+          } else {
+            resolve('You need to select a Category :)')
+          }
+        })
       }
-    });
-  };
+    }).then((result) => {
+      if(result.isConfirmed) {
+        if (choice !== '') {
+          dispatch({
+            type: 'ADD_TO_FAVORITES',
+            payload: {
+              gif: gif,
+              category: choice
+            }
+          })
+          Swal.fire({
+            icon: 'success',
+            title: 'Added to Favorites',
+            text: `You selected ${categoryChoice}`
+          })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'You need to choose a favorite category'
+          })
+          // addToFavorites();
+        }
+      }
+    })
+  }
 
   return (
     <>

@@ -5,11 +5,15 @@ const router = express.Router();
 
 // return all favorite images
 router.get('/', (req, res) => {
+  console.log('inside get favorite');
+  console.log('req.body in get favorite:', req.body);
   res.sendStatus(200);
 });
 
 // add a new favorite
 router.post('/', (req, res) => {
+  console.log('inside POST favorite');
+  console.log('req.body in POST favorite:', req.body);
   res.sendStatus(200);
 });
 
