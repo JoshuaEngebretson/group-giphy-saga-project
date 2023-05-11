@@ -10,6 +10,7 @@ import axios from 'axios';
 
 function* rootSaga() {
     yield takeLatest('SAGA/GET_SEARCH', getSearch);
+    yield takeLatest('ADD_TO_FAVORITES', postGIF);
 }
 
 function* getSearch(action) {
@@ -28,6 +29,21 @@ function* getSearch(action) {
         })
     } catch (error) {
         console.log('something broke in the /api/giphy/search GET saga function')
+        console.log(error)
+    }
+}
+function* postGIF(action) {
+    try {
+        const response = yield axios({
+            method: 'GET',
+            url: '/api/favorite',
+            data: action.payload
+        })
+        yield put({
+            type: 'ADD_TO_FAVORITES',
+        })
+    } catch (error) {
+        console.log('something broke in the /api/favorite POST saga function')
         console.log(error)
     }
 }
