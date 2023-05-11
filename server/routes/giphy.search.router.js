@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     const searchQuery = req.query.searchQuery
 
     // Set up initial search query, this will provide gifs that;
-    // - Have a "tag" of ${searchQuery}
+    // - Have a "q" of ${searchQuery}
     // - Have a "rating" of ${rating}
     // - Limit us to 10 results
     const searchGifyUrl = `http://api.giphy.com/v1/gifs/search?api_key=${process.env.GIPHY_API_KEY}&q=${searchQuery}&rating=${rating}&limit=10`
