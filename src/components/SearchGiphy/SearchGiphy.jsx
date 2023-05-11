@@ -1,41 +1,34 @@
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 function SearchGiphy() {
 
   const dispatch = useDispatch();
-  const random = useSelector(state => state.random);
   const [rating, setRating] = useState('');
   const [search, setSearch] = useState('');
 
 
   useEffect(() => {
-    getRandomGify();
+    searchGIFS();
   }, []);
 
-  const getRandomGify = () => {
-    axios({
-      method: 'GET',
-      url: '/random',
-      params: {
+  const searchGIFS = () => {
+    console.log('clicked search');
+    dispatch({
+      type: 'SAGA/GET_SEARCH',
+      payload: {
         rating: rating,
         searchQuery: search
       }
     })
-      .then((response) => {
-        const randomGif = response.data
-        dispatch({
-          type: 'SET_RANDOM',
-          payload: randomGif
-        })
-      })
-      .catch((err) => {
-        console.log('Error inside getRandomGify:', err);
-      })
   }
 
   const handleRatingChoice = event => {
     setRating(event.target.value)
+  }
+
+  const handleSearchEntry = event => {
+    setSearch(event.target.value)
   }
 
   return (
@@ -44,7 +37,7 @@ function SearchGiphy() {
       <h1>Search Giphy API</h1>
     </header>
     <div>
-    <h3>Choose a rating for the random Gif:</h3>
+    <h3>Choose a rating for the Gifs:</h3>
       <input 
         type='radio'
         value='g'
@@ -74,17 +67,15 @@ function SearchGiphy() {
       />
       <label htmlFor='r'>R</label>
 
-      <h3>Enter a keyword for the random Gif:</h3>
+      <h3>Enter a keyword for the Gifs:</h3>
         <input 
           type='text'
           onChange={handleSearchEntry}
           value={search}
         />
       <br />
-      <button onClick={getRandomGify}>Random Gif</button>
+      <button onClick={searchGIFS}>Search Gifs</button>
     </div>
-
-    <img src={random.url} alt={random.title}/>
   </div>
   )
 }
