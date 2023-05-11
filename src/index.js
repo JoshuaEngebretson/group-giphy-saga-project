@@ -12,11 +12,15 @@ function* rootSaga() {
     yield takeLatest('SAGA/GET_SEARCH', getSearch);
 }
 
-function* getSearch() {
+function* getSearch(action) {
     try {
         const response = yield axios({
             method: 'GET',
-            url: '/api/giphy/search'
+            url: '/api/giphy/search',
+            params: {
+                rating: action.payload.rating ,
+                searchQuery: action.payload.searchQuery
+            }
         })
         yield put({
             type: 'SET_SEARCH',
