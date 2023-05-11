@@ -5,23 +5,28 @@ function GifImage({gif}) {
 
   const [favoriteCategory, setFavoriteCategory] = useState('');
 
+  const handleCategoryChoice = (event) => {
+    setFavoriteCategory(event.target.value)
+    console.log('favoriteCategory:', favoriteCategory);
+  }
+
   const addToFavorites = () => {
     console.log('Clicked Favorite button');
     Swal.fire({
-      icon: 'success',
-      title: 'Favorited!',
+      icon: 'question',
+      title: 'Choose a favorite category!',
       html: `
-        <p>Clicked Favorite button</p>
-        <img src=${gif.image}>
-        <p>Favorite Category</p>
+        <p>Category</p>
         <select name="catagory">
           <option value="" disabled selected>Select a Category</option>
-          <option value="cartoon">Cartoon</option>
-          <option value="cohort">Cohort</option>
-          <option value="funny">Funny</option>
-          <option value="meme">Meme</option>
-          <option value="nsfw">NSFW</option>
+          <option value="cartoon" onChange=${handleCategoryChoice}>Cartoon</option>
+          <option value="cohort" onChange=${handleCategoryChoice}>Cohort</option>
+          <option value="funny" onChange=${handleCategoryChoice}>Funny</option>
+          <option value="meme" onChange=${handleCategoryChoice}>Meme</option>
+          <option value="nsfw" onChange=${handleCategoryChoice}>NSFW</option>
         </select>
+        <p>Favorited Image</p>
+        <img src=${gif.image}>
       `
     })
   }
