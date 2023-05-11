@@ -18,17 +18,17 @@ router.get('/', (req, res) => {
   axios.get(searchGifyUrl)
     .then((response) => {
       const resultingGifs = response.data.data;
-      console.log('\n\n\nresultingGifs within get route from GIPHY:\n\n\n', resultingGifs);
-      let gifImageArray = []
+      let gifImages = []
+      // Go through resulting Gifs, pull out the following info
+      // - title and the url for the fixed_height image
       resultingGifs.map(gif => {
         let newGif = {}
         newGif.title = gif.title
         newGif.image = gif.images.fixed_height.url
-        gifImageArray.push(newGif)
+        gifImages.push(newGif)
       })
-      console.log('\n\n\ngifImageArray populated:', gifImageArray);
-      // Send okay until I know what the data looks like.
-      res.send(gifImageArray)
+      // Send the gifImages back to redux
+      res.send(gifImages)
     })
     .catch((err) => {
       console.log('GET serachGifyUrl error:', err);
