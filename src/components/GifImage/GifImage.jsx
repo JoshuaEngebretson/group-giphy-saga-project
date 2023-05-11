@@ -1,16 +1,9 @@
 import Swal from "sweetalert2";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 function GifImage({gif}) {
 
-  const [favoriteCategory, setFavoriteCategory] = useState('');
   const dispatch = useDispatch();
-
-  const handleCategoryChoice = (event) => {
-    // setFavoriteCategory(value)
-    console.log('favoriteCategory:', favoriteCategory);
-  }
 
   let choice;
   const addToFavorites = async () => {
@@ -33,8 +26,6 @@ function GifImage({gif}) {
       inputValidator: (categoryChoice) => {
         return new Promise((resolve) => {
           if (categoryChoice !== '') {
-            console.log(categoryChoice);
-            setFavoriteCategory(categoryChoice)
             choice = categoryChoice
             resolve()
           } else {
