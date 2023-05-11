@@ -1,33 +1,70 @@
 import Swal from "sweetalert2";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 
 function GifImage({gif}) {
 
   const [favoriteCategory, setFavoriteCategory] = useState('');
+  const dispatch = useDispatch();
 
   const handleCategoryChoice = (event) => {
-    setFavoriteCategory(event.target.value)
+    // setFavoriteCategory(value)
     console.log('favoriteCategory:', favoriteCategory);
   }
 
-  const addToFavorites = () => {
+  let choice;
+  const addToFavorites = async () => {
     console.log('Clicked Favorite button');
-    Swal.fire({
-      icon: 'question',
+    const categoryChoice = await Swal.fire({
       title: 'Choose a favorite category!',
-      html: `
-        <p>Category</p>
-        <select name="catagory">
-          <option value="" disabled selected>Select a Category</option>
-          <option value="cartoon" onChange=${handleCategoryChoice}>Cartoon</option>
-          <option value="cohort" onChange=${handleCategoryChoice}>Cohort</option>
-          <option value="funny" onChange=${handleCategoryChoice}>Funny</option>
-          <option value="meme" onChange=${handleCategoryChoice}>Meme</option>
-          <option value="nsfw" onChange=${handleCategoryChoice}>NSFW</option>
-        </select>
-        <p>Favorited Image</p>
-        <img src=${gif.image}>
-      `
+      input: 'select',
+      inputOptions: {
+        'cartoon': 'Cartoon',
+        'cohort': 'Cohort',
+        'funny': 'Funny',
+        'meme': 'Meme',
+        'nsfw': 'NSFW'
+      },
+      inputPlaceholder: 'Select a Category',
+      imageUrl: gif.image,
+      showCancelButton: true,
+      confirmButtonText: `Add to favorites.`,
+      cancelButtonText: `Don't add this Gif.`,
+      inputValidator: (categoryChoice) => {
+        return new Promise((resolve) => {
+          if (categoryChoice !== '') {
+            console.log(categoryChoice);
+            setFavoriteCategory(categoryChoice)
+            choice = categoryChoice
+            resolve()
+          } else {
+            resolve('You need to select a Category :)')
+          }
+        })
+      }
+    }).then((result) => {
+      if(result.isConfirmed) {
+        if (choice !== '') {
+          dispatch({
+            type: 'ADD_TO_FAVORITES',
+            payload: {
+              gif: gif,
+              category: choice
+            }
+          })
+          Swal.fire({
+            icon: 'success',
+            title: 'Added to Favorites',
+            text: `You selected ${categoryChoice}`
+          })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'You need to choose a favorite category'
+          })
+          // addToFavorites();
+        }
+      }
     })
   }
 

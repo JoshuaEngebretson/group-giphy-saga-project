@@ -4,7 +4,6 @@ import GifImage from "../GifImage/GifImage";
 function DisplaySearchedGifs() {
 
   const searchGIFS = useSelector(store => store.searchGIFS)
-  console.log('searchGifs:', searchGIFS);
 
   return (
     <>
