@@ -1,8 +1,15 @@
-import { useSelector } from "react-redux"
-import GifImage from "../GifImage/GifImage"
+import { useSelector, useDispatch } from "react-redux"
+import { useEffect } from "react"
 
 function FavoritePage() {
     const favoriteGifs = useSelector(store => store.favoriteGifs)
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch({
+            type: 'GET_FAVORITE_GIFS'
+        });
+    }, []);
 
     return (
         <>
