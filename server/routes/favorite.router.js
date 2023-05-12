@@ -67,7 +67,41 @@ router.post('/', (req, res) => {
 // update given favorite with a category id
 router.put('/:favId', (req, res) => {
   // req.body should contain a category_id to add to this favorite image
-  res.sendStatus(200);
+  const favoriteId = req.params.favId;
+
+  const favoriteGif = req.body;
+  let categoryId;
+  switch (favoriteGif.category) {
+    case 'funny':
+      categoryId=1; break;
+    case 'cohort':
+      categoryId=2; break;
+    case 'cartoon':
+      categoryId=3; break;
+    case 'nsfw':
+      categoryId=4; break;
+    case 'meme':
+      categoryId=5; break;
+    default:
+      ''
+  }
+
+  const sqlText = `
+    UPDATE favorite
+      SET category = $1
+      WHERE id = $2
+  `;
+
+  pool.query (sqlText, [categoryId, favoriteId])
+    .then(dbRes => {
+      // On successful update within the database,
+      //  send "Okay" status
+      res.sendStatus(200)
+    })
+    .catch(dbErr => {
+      console.log('Error iside PUT /favorite/:favid:', dbErr);
+      res.sendStatus(500);
+    })
 });
 
 // delete a favorite
