@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch } from 'react-redux';
 import './SearchGiphy.css';
 
 function SearchGiphy() {
 
+  const history = useHistory();
   const dispatch = useDispatch();
   const [rating, setRating] = useState('');
   const [search, setSearch] = useState('');
-
 
   useEffect(() => {
     searchGIFS();
@@ -23,10 +24,9 @@ function SearchGiphy() {
       }
     })
   }
-  const displayFavorite = () => {
-    dispatch({
-      type:''
-    })
+
+  const favoritePage = () => {
+    history.push("/favorite")
   }
 
   const handleRatingChoice = event => {
@@ -72,7 +72,7 @@ function SearchGiphy() {
           onChange={handleRatingChoice}
         />
         <label htmlFor='r'>R</label>
-          <h3>Enter a keyword for the Gifs:</h3>
+        <h3>Enter a keyword for the Gifs:</h3>
         <input
           type='text'
           onChange={handleSearchEntry}
@@ -83,14 +83,8 @@ function SearchGiphy() {
         <br />
         <br />
         <div className="fav-cat">
-          <select name="Favorites" id="favorites" onchange={favoritePgae}>
-            <option selected disabled hidden>Favorites</option>
-            <option value="cartoon">Cartoon</option>
-            <option value="cohort">Cohort</option>
-            <option value="funny">Funny</option>
-            <option value="meme">Meme</option>
-            <option value="nsfw">Nsfw</option>
-          </select>
+
+          <button onClick={favoritePage}>Favorite Page</button>
         </div>
       </div>
     </div>
