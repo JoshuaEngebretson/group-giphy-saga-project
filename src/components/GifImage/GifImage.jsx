@@ -8,7 +8,7 @@ function GifImage({ gif }) {
   let choice;
   const addToFavorites = async () => {
     console.log('Clicked Favorite button');
-    const categoryChoice = await Swal.fire({
+    await Swal.fire({
       title: 'Choose a favorite category!',
       input: 'select',
       inputOptions: {
@@ -29,7 +29,7 @@ function GifImage({ gif }) {
             choice = categoryChoice
             resolve()
           } else {
-            resolve('You need to select a Category :)')
+            resolve('You need to select a Category')
           }
         })
       }
@@ -46,7 +46,7 @@ function GifImage({ gif }) {
           Swal.fire({
             icon: 'success',
             title: 'Added to Favorites',
-            text: `You selected ${categoryChoice}`
+            text: `You selected ${choice}`
           })
         } else {
           Swal.fire({
