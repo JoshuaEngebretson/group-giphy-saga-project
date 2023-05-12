@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux"
 import { useEffect } from "react"
+import FavoriteGifItem from "./FavoriteGifItem";
 
 function FavoritePage() {
     const favoriteGifs = useSelector(store => store.favoriteGifs)
@@ -16,10 +17,7 @@ function FavoritePage() {
             <h1>Inside Favorited Gifs</h1>
             {favoriteGifs.map(gif => {
                 return (
-                    <>
-                    <img src={gif.image_path} alt={gif.title} key={gif.id}/>
-                    <h2>{gif.category}</h2>
-                    </>
+                    <FavoriteGifItem key={gif.id} gif={gif} />
                 )
             })}
         </>

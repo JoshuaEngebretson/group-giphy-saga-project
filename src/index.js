@@ -11,7 +11,8 @@ import axios from 'axios';
 function* rootSaga() {
     yield takeLatest('SAGA/GET_SEARCH', getSearch);
     yield takeLatest('ADD_TO_FAVORITES', postGIF);
-    yield takeLatest('GET_FAVORITE_GIFS', getFavoriteGifs)
+    yield takeLatest('GET_FAVORITE_GIFS', getFavoriteGifs);
+    yield takeLatest('ADJUST_FAVORITE_CATEGORY', adjustFavoriteCategory);
 }
 
 function* getSearch(action) {
@@ -64,6 +65,21 @@ function* getFavoriteGifs(action) {
         })
     } catch (error) {
         console.log('Error inside getFavoriteGifs');
+    }
+}
+
+function* adjustFavoriteCategory(action) {
+    try {
+        const response = yield axios({
+            method: 'PUT',
+            url: `/api/favorite/${action.payload.id}`,
+            data: action.payload
+        })
+        yield put({
+            type: 'GET_FAVORITE_GIFS'
+        })
+    } catch (error) {
+        console.log('Error inside adjustFavoriteCategory saga function:', error);
     }
 }
 
