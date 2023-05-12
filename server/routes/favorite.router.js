@@ -12,9 +12,40 @@ router.get('/', (req, res) => {
 
 // add a new favorite
 router.post('/', (req, res) => {
-  console.log('inside POST favorite');
-  console.log('req.body in POST favorite:', req.body);
-  res.sendStatus(200);
+  const favoriteGif = req.body;
+  let categoryId;
+  switch (favoriteGif.category) {
+    case 'funny':
+      categoryId=1; break;
+    case 'cohort':
+      categoryId=2; break;
+    case 'cartoon':
+      categoryId=3; break;
+    case 'nsfw':
+      categoryId=4; break;
+    case 'meme':
+      categoryId=5; break;
+    default:
+      ''
+  }
+  console.log('categoryId inside POST', categoryId);
+  const sqlText = `
+    INSERT INTO favorite
+    (title, image_path, category_id)
+    VALUES
+    ($1, $2, $3);
+  `;
+  const sqlValues = [favoriteGif.gif.title, favoriteGif.gif.image, categoryId]
+  
+  pool.query(sqlText, sqlValues)
+    .then((dbRes) => {
+      // Send "Created" status
+      res.sendStatus(201);
+    })
+    .catch((dbErr) => {
+      console.log('Error with POST /favorite:', dbErr);
+      res.sendStatus(500);
+    })
 });
 
 // update given favorite with a category id
