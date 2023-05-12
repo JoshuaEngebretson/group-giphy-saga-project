@@ -20,7 +20,7 @@ function* getSearch(action) {
             method: 'GET',
             url: '/api/giphy/search',
             params: {
-                rating: action.payload.rating ,
+                rating: action.payload.rating,
                 searchQuery: action.payload.searchQuery
             }
         })

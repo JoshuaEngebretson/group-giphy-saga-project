@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 import { useDispatch } from "react-redux";
 
-function GifImage({gif}) {
+function GifImage({ gif }) {
 
   const dispatch = useDispatch();
 
@@ -61,7 +61,7 @@ function GifImage({gif}) {
 
   return (
     <>
-      <img 
+      <img
         key={gif.image}
         src={gif.image}
         alt={gif.title}
