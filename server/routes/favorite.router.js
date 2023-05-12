@@ -89,7 +89,7 @@ router.put('/:favId', (req, res) => {
   const sqlText = `
     UPDATE favorite
       SET category = $1
-      WHERE id = $2
+      WHERE id = $2;
   `;
 
   pool.query (sqlText, [categoryId, favoriteId])
@@ -105,8 +105,20 @@ router.put('/:favId', (req, res) => {
 });
 
 // delete a favorite
-router.delete('/', (req, res) => {
-  res.sendStatus(200);
+router.delete('/:favid', (req, res) => {
+  const favoriteId = req.params.favId;
+  const sqlText = `
+    DELETE FROM favorite
+      WHERE id=$1
+  `;
+  pool.query(sqlText, [favoriteId])
+    .then(dbRes => {
+      res.sendStatus(200);
+    })
+    .catch(dbErr => {
+      console.log('Error iside DELETE /favorite/:favid:', dbErr);
+      res.sendStatus(500);
+    })
 });
 
 module.exports = router;
