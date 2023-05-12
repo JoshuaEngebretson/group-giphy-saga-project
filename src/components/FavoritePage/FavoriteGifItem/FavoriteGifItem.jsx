@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import Swal from "sweetalert2";
+import './FavoriteGifItem.css'
 
 function FavoriteGifItem ({gif}) {
 
@@ -60,10 +61,11 @@ function FavoriteGifItem ({gif}) {
     //   payload: {category: gif.category, id: gif.id}
     // })
   }
+
   return (
-    <div onClick={adjustCategory}>
-    <h2>{gif.category}</h2>
-    <img src={gif.image_path} alt={gif.title} key={gif.id}/>
+    <div onClick={adjustCategory} className='inline'>
+      <h2>{gif.category}</h2>
+      <img src={gif.image_path} alt={gif.title} key={gif.id}/>
     </div>
   )
 }
