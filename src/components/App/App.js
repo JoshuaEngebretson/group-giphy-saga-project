@@ -10,6 +10,10 @@ function App() {
       <h1>Giphy Search!</h1>
 
       <Router>
+        <ul>
+          <li><Link to='/'>Home</Link></li>
+          <li><Link to='/favorite'>Favorites</Link></li>
+        </ul>
         <Route exact path='/'>
           <SearchGiphy />
           <DisplaySearchedGifs />
