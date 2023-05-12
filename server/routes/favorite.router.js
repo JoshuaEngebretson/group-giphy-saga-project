@@ -7,7 +7,23 @@ const router = express.Router();
 router.get('/', (req, res) => {
   console.log('inside get favorite');
   console.log('req.body in get favorite:', req.body);
-  res.sendStatus(200);
+  const sqlText = `
+  SELECT 
+    favorite.id,
+    favorite.title,
+    favorite.image_path,
+    category.name AS category
+  FROM favorite
+    JOIN category ON favorite.category_id = category.id;
+  `;
+  pool.query(sqlText)
+    .then((dbRes) => {
+      res.send(dbRes.rows);
+    })
+    .catch((dbErr) => {
+      console.log('Error with GET /favorite:', dbErr);
+      res.sendStatus(500);
+    })
 });
 
 // add a new favorite
