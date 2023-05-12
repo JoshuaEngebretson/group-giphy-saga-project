@@ -47,9 +47,9 @@ router.post('/', (req, res) => {
   console.log('categoryId inside POST', categoryId);
   const sqlText = `
     INSERT INTO favorite
-    (title, image_path, category_id)
+      (title, image_path, category_id)
     VALUES
-    ($1, $2, $3);
+      ($1, $2, $3);
   `;
   const sqlValues = [favoriteGif.gif.title, favoriteGif.gif.image, categoryId]
   
@@ -88,7 +88,7 @@ router.put('/:favId', (req, res) => {
 
   const sqlText = `
     UPDATE favorite
-      SET category = $1
+      SET category_id = $1
       WHERE id = $2;
   `;
 
@@ -109,7 +109,7 @@ router.delete('/:favid', (req, res) => {
   const favoriteId = req.params.favId;
   const sqlText = `
     DELETE FROM favorite
-      WHERE id=$1
+      WHERE id=$1;
   `;
   pool.query(sqlText, [favoriteId])
     .then(dbRes => {
