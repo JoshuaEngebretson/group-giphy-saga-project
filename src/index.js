@@ -20,7 +20,7 @@ function* getSearch(action) {
             method: 'GET',
             url: '/api/giphy/search',
             params: {
-                rating: action.payload.rating ,
+                rating: action.payload.rating,
                 searchQuery: action.payload.searchQuery
             }
         })
@@ -30,21 +30,6 @@ function* getSearch(action) {
         })
     } catch (error) {
         console.log('something broke in the /api/giphy/search GET saga function')
-        console.log(error)
-    }
-}
-function* postGIF(action) {
-    try {
-        const response = yield axios({
-            method: 'GET',
-            url: '/api/favorite',
-            data: action.payload
-        })
-        yield put({
-            type: 'ADD_TO_FAVORITES',
-        })
-    } catch (error) {
-        console.log('something broke in the /api/favorite POST saga function')
         console.log(error)
     }
 }
